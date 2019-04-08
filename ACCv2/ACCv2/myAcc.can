@@ -1,0 +1,148 @@
+/*@!Encoding:1252*/
+includes{
+  
+}
+
+variables{
+  message ACC_Accelerate messageAccelerate;
+  message ACC_Brake messageBrake;
+  message ACC_Slowdown messageSlowDown;
+  message Display_State messageDisplayState;
+  message ACC_Error messageError;
+
+  byte state = 0;
+  int accSpeed = 160;
+  int carSpeed = 0;
+  int accDistance = 20;
+  int carDistance = 0;
+  int sollSpeed = 0;
+}
+
+on start{
+  sendSetting();
+}
+
+on message ACC_State{
+  if(carSpeed > 29 && carSpeed < 181){
+      state = this.ACC_State;
+      sendSetting();
+  }
+}
+
+on message Distance_Adjust{
+  if(this.Distance_Adjust>30){
+    write("reach maximum Distance");
+  }else if(this.Distance_Adjust<10){
+    write("reach minimum Distance");
+  }else{
+    accDistance = this.Distance_Adjust;
+    sendSetting();
+  }
+}
+
+on Message Distance_Current{  
+  if(state){
+    carDistance = this.Distance_Current;
+    /*write("cardistance= %d",this.Distance_Current);
+    write("accdistence= %d",accDistance);
+    write("carSpeed   = %d",carSpeed);
+    write("accRealDist. %d",getAccDistanceMeter());
+    write("Sollspeed  = %d\n\n", sollSpeed);*/
+    if(this.Distance_Current<15001){
+       if(getAccDistanceMeter() < this.Distance_Current && sollSpeed <= accSpeed){
+        if(sollSpeed<accSpeed){
+            sollSpeed += 1;
+        }
+      }else{
+        if(sollSpeed>30){
+           sollSpeed -= 1;
+        }
+      }
+    }else{
+      sollSpeed = accSpeed;
+    }
+    controalSpeed();
+  }
+}//done 2Phasenregelung
+
+on message Speed_Adjust{
+  if(this.Speed_Adjust>180){
+    write("reach maximum Distance");
+  }else if(this.Speed_Adjust<30){
+    write("reach minimum Distance");
+  }else{
+    accSpeed = this.Speed_Adjust;
+    sendSetting();
+  }
+}
+
+on message Manual_Brake{
+  if(state){
+    state=0;
+    sendSetting();
+  }
+}
+
+on message Manual_Accelerate{
+  if(state){
+    state=0;
+    sendSetting();
+  }
+}
+
+on message Car1_State{
+  carSpeed = this.Speed_Car1_Current;
+  write("carSpeed %d",carSpeed);
+  if(state){
+    if(this.Speed_Car1_Current<01 && this.Speed_Car1_Current>181){
+       state=0;
+       messageDisplayState.ACC_State=state;
+       messageError.ACC_Error=1;
+       output(messageError);
+       sendSetting();
+     }
+  }else{
+    sollSpeed = carSpeed;
+  }
+}
+
+controalSpeed(){
+  if(carDistance<1000 && carDistance > 0){
+    sendAccBreak();
+    write("achtung");
+  }else{  
+    if(carSpeed < sollSpeed){
+      sendAccAccelerate();
+    }else if(carSpeed > sollSpeed){
+      sendAccSlowdonw();
+    }
+  }
+} //done
+
+int getAccDistanceMeter(){
+  return (int)(((((float)accDistance*100)*(float)carSpeed)/3600.0)*100.0);
+}
+
+sendAccAccelerate(){
+  if(carSpeed <= accSpeed){
+    messageAccelerate.PedalTravel_ACC_Accelerate = 1;
+    output(messageAccelerate);
+  }
+}
+
+sendAccBreak(){
+  messageBrake.PedalTravel_ACC_Brake = 1;
+  output(messageBrake);
+}
+
+sendAccSlowdonw(){
+  messageSlowDown.PedalTravel_ACC_Slowdown = 1;
+  output(messageSlowDown);
+}
+
+sendSetting(){
+  messageDisplayState.ACC_State=state;
+  messageDisplayState.Distance_Adjusted=accDistance;
+  messageDisplayState.Speed_Adjusted=accSpeed;
+  output(messageDisplayState);
+}

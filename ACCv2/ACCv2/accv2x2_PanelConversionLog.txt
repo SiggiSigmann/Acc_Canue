@@ -1,0 +1,15 @@
+Date / Time
+===========
+04.04.2019 / 11:33
+
+Conversion report:
+==================
+Information: The panel 'E:\Embedded_Lab_02\ACCv2\ACCv2\maindisplay_ver41.cnp' was converted successfully.
+
+[Added Panels]
+Following panels are added to the configuration:
+E:\Embedded_Lab_02\ACCv2\ACCv2\maindisplay_ver41.xvp
+
+[Removed Panels]
+Following panels are removed from the configuration:
+E:\Embedded_Lab_02\ACCv2\ACCv2\maindisplay_ver41.cnp
