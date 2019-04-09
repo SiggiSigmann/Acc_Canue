@@ -43,11 +43,11 @@ on message Distance_Adjust{
 on Message Distance_Current{  
   if(state){
     carDistance = this.Distance_Current;
-    /*write("cardistance= %d",this.Distance_Current);
+    write("cardistance= %d",this.Distance_Current);
     write("accdistence= %d",accDistance);
     write("carSpeed   = %d",carSpeed);
     write("accRealDist. %d",getAccDistanceMeter());
-    write("Sollspeed  = %d\n\n", sollSpeed);*/
+    write("Sollspeed  = %d\n\n", sollSpeed);
     if(this.Distance_Current<15001){
        if(getAccDistanceMeter() < this.Distance_Current && sollSpeed <= accSpeed){
         if(sollSpeed<accSpeed){
@@ -92,7 +92,6 @@ on message Manual_Accelerate{
 
 on message Car1_State{
   carSpeed = this.Speed_Car1_Current;
-  write("carSpeed %d",carSpeed);
   if(state){
     if(this.Speed_Car1_Current<01 && this.Speed_Car1_Current>181){
        state=0;
@@ -107,9 +106,9 @@ on message Car1_State{
 }
 
 controalSpeed(){
-  if(carDistance<1000 && carDistance > 0){
+  if(carDistance<3000 && carDistance > 0){
     sendAccBreak();
-    write("achtung");
+    //write("achtung");
   }else{  
     if(carSpeed < sollSpeed){
       sendAccAccelerate();

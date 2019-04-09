@@ -732,6 +732,17 @@
       <Property Name="TabIndex">68</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.GroupBoxControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.114.0, Culture=neutral, PublicKeyToken=null" Name="GroupBoxControl69" Children="Controls" ControlName="ElemFrame">
+      <Object Type="Vector.CANalyzer.Panels.Design.LCDControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.114.0, Culture=neutral, PublicKeyToken=null" Name="LCDControl1" ControlName="">
+        <Property Name="Name">LCDControl1</Property>
+        <Property Name="Size">59, 27</Property>
+        <Property Name="Location">458, 193</Property>
+        <Property Name="NumberIntDigits">2</Property>
+        <Property Name="DecimalPlaces">0</Property>
+        <Property Name="BackColor">White</Property>
+        <Property Name="ColorOff">White</Property>
+        <Property Name="SegmentStrength">2</Property>
+        <Property Name="SymbolConfiguration">5;1;ACC_DB_Intern;;;DUI_Gang;1;;;-1;;;</Property>
+      </Object>
       <Object Type="Vector.CANalyzer.Panels.Design.AnalogGaugeControl, Vector.CANalyzer.Panels.AnalogGauge, Version=10.0.114.0, Culture=neutral, PublicKeyToken=null" Name="AnalogGaugeControl1" ControlName="Drehzahlmeser">
         <Property Name="Name">AnalogGaugeControl1</Property>
         <Property Name="Size">205, 185</Property>

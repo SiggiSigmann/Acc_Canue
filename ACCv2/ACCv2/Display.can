@@ -55,7 +55,8 @@ on timer update
 	putValue(DUI_ACC_State, acc_state);
 	putValue(DUI_Speed_Current, speed_current);
     if(speed_current){
-      putValue(DUI_Drehzahl, (speed_current%60)*9+10);
+      putValue(DUI_Drehzahl, (speed_current%47)*9+10);
+      putValue(DUI_Gang , (int)(speed_current/47.0)+1);
   }else{
     putValue(DUI_Drehzahl, 10);
   }
